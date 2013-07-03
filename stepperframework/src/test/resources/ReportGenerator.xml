@@ -1,0 +1,83 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/aop
+           http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+           
+<!-- 	<import resource="aop.xml"/> --> 
+
+
+	<!-- this is the actual advice itself -->
+
+
+		
+<bean id="dummyComponent" class="org.stepper.test.dummyComponent">
+<property name="continueOnError">
+	<value>true</value>
+	</property>
+	<!-- <property name="errorHandler" ref="CleanerErrorHandler"/> -->
+
+</bean>
+
+<bean id="dummyComponent1" class="org.stepper.test.dummyComponent">
+<property name="continueOnError">
+	<value>true</value>
+	</property>
+	<!--  <property name="errorHandler" ref="CleanerErrorHandler"/> --> 
+
+</bean>
+
+<bean id="dummyComponent2" class="org.stepper.test.dummyComponent2">
+<!-- <property name="errorHandler" ref="CleanerErrorHandler"/> -->
+</bean>
+
+<bean id="dummyComponent3" class="org.stepper.test.dummyComponent2">
+<!-- <property name="errorHandler" ref="CleanerErrorHandler"/> -->
+</bean>
+
+
+<bean id="EndTask" class="org.stepper.test.dummyEndComponent">
+<!-- <property name="errorHandler" ref="CleanerErrorHandler"/> -->
+</bean>
+
+
+<bean id="TransactionalSequence" class="org.stepper.control.TransactionalSequence">
+	<constructor-arg>
+        <list>
+        <ref bean="dummyComponent2" />
+		 <ref bean="dummyComponent3" /> 
+        </list>
+    </constructor-arg>
+	
+</bean>
+
+
+<bean id="SimpleSequence" class="org.stepper.control.Sequence">
+	<constructor-arg>
+        <list>
+		 <ref bean="dummyComponent" />       
+         </list>
+    </constructor-arg>
+	
+</bean>
+
+
+<bean id="AppSequence" class="org.stepper.control.ApplicationSequence">
+	<constructor-arg>
+        <list>
+		  <ref bean="SimpleSequence" />        
+ 		<ref bean="TransactionalSequence" />  
+ 		<ref bean="EndTask" />
+        </list>
+    </constructor-arg>
+	
+</bean>
+
+
+
+</beans>
